@@ -19,8 +19,7 @@ class App extends React.Component {
     return (
       <div className="App">
         <NavigationBar/>
-        <input onChange = {(event) => this.onUserLogin(event)}/>
-        <p>texto: {this.props.userlogin.userlogin}</p>
+        <input onClick= {() => console.log(this.props)}/>
       </div>
     );
   }
@@ -42,10 +41,5 @@ const mapStateToProps = (state, props) => {
   }
 };
 
-const mapActionsToProps = (dispatch, props) => {
-    return bindActionCreators({
-      onUserLogin: userLogin,
-    }, dispatch);
-}
 
-export default connect(mapStateToProps, mapActionsToProps)(App);
+export default connect(mapStateToProps)(App);

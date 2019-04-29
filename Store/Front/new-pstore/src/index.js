@@ -6,10 +6,12 @@ import * as serviceWorker from './serviceWorker';
 import {createStore, combineReducers} from 'redux';
 import {Provider} from 'react-redux'
 import LoggedClienteReducer from './reducers/logged-client-reducer';
+import authReducer from './reducers/auth-reducer'
 
 
 const allReducers = combineReducers({
         userLogin: LoggedClienteReducer,
+        auth: authReducer,
 })
 
 

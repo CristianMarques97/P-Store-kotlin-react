@@ -20,7 +20,7 @@ class HttpReturnException(status_code: Int, status: HttpStatus, message: String)
         final val NO_CONTENT = 204
         final val INTERNAL_SERVER_ERROR = 500
 
-        final val SQL_ERR_01 = "Usuário não encontrado"
+        final val SQL_ERR_01 = "Usuário ou senha inválidos"
         final val REQUEST_ERR_01 = "Por Favor inserir o e-mail e a senha"
 
     }

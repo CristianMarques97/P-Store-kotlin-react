@@ -11,18 +11,9 @@ import { withStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
-import Button from '@material-ui/core/Button';
-import List from '@material-ui/core/List';
-import Divider from '@material-ui/core/Divider';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
+//import Button from '@material-ui/core/Button';
 
-
-
-/// Drawer https://codesandbox.io/s/3yx404w2mq
+import LeftNavigation from './left-navigation';
 
 const styles = theme => ({
     root: {
@@ -87,39 +78,25 @@ const styles = theme => ({
 class NavigationBar extends React.Component {
     constructor(props) {
         super(props)
+        this.state = {
+            drawerState: false,
+        }
     }
+
+    toggleDrawer = open => {
+        this.setState({
+          drawerState: open,
+        });
+      };
+
     render() {
 
-        const { classes } = this.props;
-
-        const sideList = (
-            <div className={classes.list}>
-                <List>
-                    {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-                        <ListItem button key={text}>
-                            <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                            <ListItemText primary={text} />
-                        </ListItem>
-                    ))}
-                </List>
-                <Divider />
-                <List>
-                    {['All mail', 'Trash', 'Spam'].map((text, index) => (
-                        <ListItem button key={text}>
-                            <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                            <ListItemText primary={text} />
-                        </ListItem>
-                    ))}
-                </List>
-            </div>
-        );
-
-        
+        const { classes } = this.props;       
         return (
             <div className={classes.root}>
                 <AppBar position="static">
                     <Toolbar>
-                        <IconButton className={classes.menuButton} color="inherit" aria-label="Open drawer">
+                        <IconButton className={classes.menuButton} color="inherit" aria-label="Open drawer" onClick = {() => this.toggleDrawer(true)}>
                             <MenuIcon />
                         </IconButton>
                         <Typography className={classes.title} variant="h6" color="inherit" noWrap>
@@ -144,10 +121,10 @@ class NavigationBar extends React.Component {
                     </Toolbar>
                 </AppBar>
                 <SwipeableDrawer
-                    open={this.state.left}
-                    onClose={this.toggleDrawer('left', false)}
-                    onOpen={this.toggleDrawer('left', true)}
-                >{sideList}
+                    open={this.state.drawerState}
+                    onClose={() => this.toggleDrawer(false)}
+                    onOpen={() => this.toggleDrawer(true)}
+                ><LeftNavigation/>
                 </SwipeableDrawer>
             </div>
                 );
