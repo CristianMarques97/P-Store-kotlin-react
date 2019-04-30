@@ -1,8 +1,8 @@
 export const AUTORIZE_USER = 'user:auth';
 
-export default function userlogin(authState) {
+export default function userAuthlogin(authState) {
         return {
             type: AUTORIZE_USER,
-            authState,
+            auth: authState,
         }
 }

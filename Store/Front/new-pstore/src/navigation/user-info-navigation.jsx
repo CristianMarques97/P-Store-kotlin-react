@@ -10,7 +10,7 @@ class UserInfoNavigation extends Component {
     }
     render() { 
         return ( 
-            <div>{ this.props.userLogin.profile_icon !== null ?
+            <div>{ this.props.userlogin.profile_icon !== "" ?
                 <Avatar alt="Avatar do Usuário" src = ""/> :
                 <Avatar>this.props.userLogin.name.charAt(0) + this.props.userLogin.lastname.charAt(0)</Avatar>
                 }

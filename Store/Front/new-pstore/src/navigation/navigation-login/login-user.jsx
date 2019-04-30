@@ -19,7 +19,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 import { connect } from 'react-redux';
 import {bindActionCreators} from 'redux';
 import userLogin from '../../actions/logged-user-actions';
-
+import userAuthlogin from '../../actions/auth-actions'
 
 class UserLogin extends Component {
     constructor(props) {
@@ -31,6 +31,7 @@ class UserLogin extends Component {
             userEmailError: false,
             passwordError: false,
             loginErrorDialog: false,
+            successLoginDialog: false,
         }
     }
 
@@ -47,7 +48,21 @@ class UserLogin extends Component {
         this.handleErrorDialogOpen();
         this.errorMessage = "";
       }
+
+      handleSuccessDialogOpen() {
+            this.setState({
+                successLoginDialog: !this.state.successLoginDialog,
+            })
+      };
+
+      handleSuccessDialogClose() {
+        this.setState({
+            successLoginDialog: !this.state.successLoginDialog,
+        },this.onAuthChange(true))
+  };
+
     errorMessage = "";
+    successMessage = "";
     render() {
         return (
             <div>
@@ -67,6 +82,27 @@ class UserLogin extends Component {
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={() => this.closeErrorDialog()} color="primary">
+                            Ok
+            </Button>
+                    </DialogActions>
+                </Dialog>
+
+                <Dialog
+                    open={this.state.successLoginDialog}
+                    onClose={() => this.handleSuccessDialogClose()}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                >
+                    <DialogTitle id="alert-dialog-title">
+                        Bem-vindo
+          </DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                            {this.successMessage}
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={() => this.handleSuccessDialogClose()} color="primary">
                             Ok
             </Button>
                     </DialogActions>
@@ -124,12 +160,14 @@ class UserLogin extends Component {
 
     validateLoginRequest() {
         let isValid = true
+        // eslint-disable-next-line 
         if (this.state.userEmail == "" || this.state.userEmail == null) {
             isValid = false;
             this.setState({
                 userEmailError: true,
             })
         }
+        // eslint-disable-next-line 
         if (this.state.password == "" || this.state.password == null) {
             isValid = false;
             this.setState({
@@ -143,6 +181,7 @@ class UserLogin extends Component {
     }
 
     loginRequest() {
+        console.log(this.props)
         if (!this.validateLoginRequest())
             return;
 
@@ -158,44 +197,50 @@ class UserLogin extends Component {
             })
         })
             .then(Response => {
-                if(Response.status == 404)
-                throw Response.json();
-
+                // eslint-disable-next-line 
+                if(Response.status == 404 || Response.status == 500 || Response.status == 400)
+                    throw Response;
                 return Response.json();
             })
-            .then(response => {
-                console.log("passou aqui");
+            .then(response => {                
+                this.onUserLogin(response); 
+                this.successMessage = "Você entrou com sucesso. Bem-vindo: " + this.props.userlogin.lastname;
+                this.handleSuccessDialogOpen();
                 
-                //this.onUserLogin(response);
-                
+
             })
             .catch(err => {
-                throw err.json();
-            })
-            .catch(errorResponse => { 
-                console.log(errorResponse)    ;
-                this.errorMessage = errorResponse;
-                this.handleErrorDialogOpen();
+                
+                err.json().then(errorMessage => {     
+                    this.errorMessage = errorMessage.message;
+                    this.handleErrorDialogOpen();
+                })
+                
+           
             })
     }
 
 
-    onUserLogin(event) {
-        console.log(this.props)
-        this.props.onUserLogin(event.target.value);
+    onUserLogin(user) {
+        this.props.onUserLogin(user);
       }
 
+      onAuthChange(authAction) {
+          this.props.onAuthChange(authAction);
+      }
 }
 
 const mapStateToProps = (state, props) => {
     return {
       userlogin: state.userLogin,
+      auth: state.auth,
     }
   };
   
   const mapActionsToProps = (dispatch, props) => {
       return bindActionCreators({
         onUserLogin: userLogin,
+        onAuthChange: userAuthlogin,
       }, dispatch);
   }
   

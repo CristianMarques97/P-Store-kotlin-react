@@ -15,13 +15,6 @@ import UserLogin from './navigation-login/login-user';
 
 class LeftNavigation extends Component {
 
-    constructor(props) {
-        super(props);
-
-    }
-
-
-
     render() {
         return (
             <div>

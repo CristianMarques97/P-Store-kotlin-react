@@ -14,14 +14,16 @@ class HttpReturnException(status_code: Int, status: HttpStatus, message: String)
     override var message = message
 
     companion object {
-        final val OK = 200
-        final val CONFLICT = 409
-        final val NOT_FOUND = 404
-        final val NO_CONTENT = 204
-        final val INTERNAL_SERVER_ERROR = 500
+        val OK = 200
+        val CONFLICT = 409
+        val NOT_FOUND = 404
+        val NO_CONTENT = 204
+        val BAD_REQUEST = 400
+        val INTERNAL_SERVER_ERROR = 500
 
-        final val SQL_ERR_01 = "Usuário ou senha inválidos"
-        final val REQUEST_ERR_01 = "Por Favor inserir o e-mail e a senha"
+        val SQL_ERR_01 = "Usuário ou senha inválidos"
+        val REQUEST_ERR_01 = "Por Favor inserir o e-mail e a senha"
+        val REQUEST_ERR_02 = "Ouve um erro no serviço, tente novamente mais tarde"
 
     }
 

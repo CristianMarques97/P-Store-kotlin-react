@@ -1,6 +1,4 @@
 import React from 'react';
-import {bindActionCreators} from 'redux';
-import userLogin from './actions/logged-user-actions';
 import NavigationBar from './navigation/navigation-bar';
 import './App.css';
 import { connect } from 'react-redux';

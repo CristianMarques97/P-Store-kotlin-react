@@ -33,7 +33,9 @@ class StoreController {
             userReceived?.senha = ""
             return userReceived
         } catch (e: EmptyResultDataAccessException) {
-            throw HttpReturnException(404, HttpStatus.NOT_FOUND, HttpReturnException.SQL_ERR_01)
+            throw HttpReturnException(HttpReturnException.NOT_FOUND, HttpStatus.NOT_FOUND, HttpReturnException.SQL_ERR_01)
+        } catch(e: Exception) {
+            throw HttpReturnException(HttpReturnException.INTERNAL_SERVER_ERROR, HttpStatus.INTERNAL_SERVER_ERROR,HttpReturnException.REQUEST_ERR_02)
         }
     }
 
@@ -51,10 +53,10 @@ class StoreController {
             return userReceived
 
         }catch (e: EmptyResultDataAccessException) {
-            throw HttpReturnException(404, HttpStatus.NOT_FOUND, HttpReturnException.SQL_ERR_01)
+            throw HttpReturnException(HttpReturnException.NOT_FOUND, HttpStatus.NOT_FOUND, HttpReturnException.SQL_ERR_01)
         }
         catch(e: Exception) {
-            throw e.message?.let { HttpReturnException(400,HttpStatus.BAD_REQUEST, it) }!!
+            throw e.message?.let { HttpReturnException(HttpReturnException.BAD_REQUEST,HttpStatus.BAD_REQUEST, it) }!!
         }
     }
 
@@ -65,7 +67,7 @@ class CipherText {
 
     companion object {
         fun crypt(password: String): String {
-            var cipher = password.toByteArray(Charsets.UTF_8)
+            val cipher = password.toByteArray(Charsets.UTF_8)
             for (i in cipher.indices) {
                 cipher[i] = ((cipher[i] + 13 - cipher.size - 4) + 15).toByte()
             }
@@ -74,7 +76,7 @@ class CipherText {
         }
 
         fun decrypt(password: String): String {
-            var plain = password.toByteArray()
+            val plain = password.toByteArray()
             for (i in plain.indices) {
                 plain[i] = ((plain[i] - 13 + plain.size + 4) + 15).toByte()
             }
