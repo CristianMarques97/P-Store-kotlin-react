@@ -20,7 +20,7 @@ import { connect } from 'react-redux';
 import {bindActionCreators} from 'redux';
 import userLogin from '../../actions/logged-user-actions';
 import userAuthlogin from '../../actions/auth-actions'
-
+import {REQUEST_ERR_01} from '../../request-config';
 class UserLogin extends Component {
     constructor(props) {
         super(props);
@@ -197,27 +197,36 @@ class UserLogin extends Component {
             })
         })
             .then(Response => {
+                console.log(Response);
                 // eslint-disable-next-line 
                 if(Response.status == 404 || Response.status == 500 || Response.status == 400)
                     throw Response;
                 return Response.json();
             })
-            .then(response => {                
+            .then(response => {                                
                 this.onUserLogin(response); 
                 this.successMessage = "Você entrou com sucesso. Bem-vindo: " + this.props.userlogin.lastname;
                 this.handleSuccessDialogOpen();
-                
 
             })
             .catch(err => {
-                
                 err.json().then(errorMessage => {     
                     this.errorMessage = errorMessage.message;
                     this.handleErrorDialogOpen();
-                })
-                
-           
+                })  
             })
+            .catch(err => {                
+                this.errorMessage = REQUEST_ERR_01;
+                this.handleErrorDialogOpen();
+            })
+            .finally(this.clearInput())
+    }
+
+    clearInput() {
+        this.setState({
+            userEmail: "",
+            password: "",
+        })
     }
 
 

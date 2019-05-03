@@ -11,8 +11,10 @@ import { withStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
+import { connect } from 'react-redux';
+import {bindActionCreators} from 'redux';
+import drawerChangeState from "../actions/drawer-action";
 //import Button from '@material-ui/core/Button';
-
 import LeftNavigation from './left-navigation';
 
 const styles = theme => ({
@@ -85,18 +87,18 @@ class NavigationBar extends React.Component {
 
     toggleDrawer = open => {
         this.setState({
-          drawerState: open,
+            drawerState: open,
         });
-      };
+    };
 
     render() {
 
-        const { classes } = this.props;       
+        const { classes } = this.props;
         return (
             <div className={classes.root}>
                 <AppBar position="static">
                     <Toolbar>
-                        <IconButton className={classes.menuButton} color="inherit" aria-label="Open drawer" onClick = {() => this.toggleDrawer(true)}>
+                        <IconButton className={classes.menuButton} color="inherit" aria-label="Open drawer" onClick={() => this.onDrawerStateChange(true)}>
                             <MenuIcon />
                         </IconButton>
                         <Typography className={classes.title} variant="h6" color="inherit" noWrap>
@@ -121,18 +123,36 @@ class NavigationBar extends React.Component {
                     </Toolbar>
                 </AppBar>
                 <SwipeableDrawer
-                    open={this.state.drawerState}
-                    onClose={() => this.toggleDrawer(false)}
-                    onOpen={() => this.toggleDrawer(true)}
+                    open={this.props.drawerState}
+                    onClose={() => this.onDrawerStateChange(false)}
+                    onOpen={() => this.onDrawerStateChange(true)}
                 ><LeftNavigation/>
                 </SwipeableDrawer>
             </div>
-                );
-            }
-        }
-        
+        );
+    }
+
+    onDrawerStateChange(stateChange) {
+        this.props.onDrawerStateChange(stateChange);
+    }
+}
+
 NavigationBar.propTypes = {
-                    classes: PropTypes.object.isRequired,
-            };
-            
-            export default withStyles(styles)(NavigationBar);
+    classes: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = (state, props) => {
+    return {
+        drawerState: state.drawerState,
+    }
+};
+
+const mapActionsToProps = (dispatch, props) => {
+    return bindActionCreators({
+        onDrawerStateChange: drawerChangeState,
+    }, dispatch);
+}
+
+
+
+export default connect(mapStateToProps, mapActionsToProps)(withStyles(styles)(NavigationBar));

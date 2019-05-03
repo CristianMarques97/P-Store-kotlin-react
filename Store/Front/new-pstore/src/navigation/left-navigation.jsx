@@ -25,7 +25,7 @@ class LeftNavigation extends Component {
 
     loginMenu = (
         <div>
-            <UserLogin />
+            <UserLogin/>
         </div>
     );
 

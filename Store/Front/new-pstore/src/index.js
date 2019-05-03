@@ -7,11 +7,13 @@ import {createStore, combineReducers} from 'redux';
 import {Provider} from 'react-redux'
 import LoggedClienteReducer from './reducers/logged-client-reducer';
 import authReducer from './reducers/auth-reducer'
+import drawerReducer from './reducers/drawer-reducer';
 
 
 const allReducers = combineReducers({
         userLogin: LoggedClienteReducer,
         auth: authReducer,
+        drawerState: drawerReducer,
 })
 
 
