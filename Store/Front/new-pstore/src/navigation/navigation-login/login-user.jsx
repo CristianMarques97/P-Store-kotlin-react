@@ -19,7 +19,8 @@ import DialogActions from "@material-ui/core/DialogActions";
 import { connect } from 'react-redux';
 import {bindActionCreators} from 'redux';
 import userLogin from '../../actions/logged-user-actions';
-import userAuthlogin from '../../actions/auth-actions'
+import userAuthlogin from '../../actions/auth-actions';
+import drawerChangeState from  '../../actions/drawer-action';
 import {REQUEST_ERR_01} from '../../request-config';
 class UserLogin extends Component {
     constructor(props) {
@@ -56,9 +57,14 @@ class UserLogin extends Component {
       };
 
       handleSuccessDialogClose() {
+          
         this.setState({
             successLoginDialog: !this.state.successLoginDialog,
-        },this.onAuthChange(true))
+        });
+        this.onAuthChange(true);
+        this.onDrawerStateChange(false);
+
+        
   };
 
     errorMessage = "";
@@ -237,6 +243,10 @@ class UserLogin extends Component {
       onAuthChange(authAction) {
           this.props.onAuthChange(authAction);
       }
+
+      onDrawerStateChange(stateAction) {
+            this.props.onDrawerStateChange(stateAction);
+      }
 }
 
 const mapStateToProps = (state, props) => {
@@ -250,6 +260,7 @@ const mapStateToProps = (state, props) => {
       return bindActionCreators({
         onUserLogin: userLogin,
         onAuthChange: userAuthlogin,
+        onDrawerStateChange: drawerChangeState,
       }, dispatch);
   }
   
