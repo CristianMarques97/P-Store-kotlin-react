@@ -78,19 +78,7 @@ const styles = theme => ({
 });
 
 class NavigationBar extends React.Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            drawerState: false,
-        }
-    }
-
-    toggleDrawer = open => {
-        this.setState({
-            drawerState: open,
-        });
-    };
-
+    
     render() {
 
         const { classes } = this.props;
