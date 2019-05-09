@@ -74,7 +74,7 @@ class UserLogin extends Component {
             <div>
                 <Dialog
                     open={this.state.loginErrorDialog}
-                    onClose={() => this.handleErrorDialogClose()}
+                    onClose={() => this.handleErrorDialogOpen()}
                     aria-labelledby="alert-dialog-title"
                     aria-describedby="alert-dialog-description"
                 >
